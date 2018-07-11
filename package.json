@@ -1,0 +1,40 @@
+{
+  "name": "maze-generator",
+  "version": "1.0.0",
+  "description": "Maze generation algorithm implementation",
+  "main": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghassen-chetioui/maze-generator.git"
+  },
+  "keywords": [
+    "maze",
+    "typescript",
+    "p5*"
+  ],
+  "author": "Ghassen Chetioui",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ghassen-chetioui/maze-generator/issues"
+  },
+  "homepage": "https://github.com/ghassen-chetioui/maze-generator#readme",
+  "engines": {
+    "node": ">=8"
+  },
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "serve": "http-server ./dist"
+  },
+  "devDependencies": {
+    "@types/node": "^9.4.0",
+    "html-webpack-plugin": "^2.30.1",
+    "http-server": "^0.11.1",
+    "ts-loader": "^3.4.0",
+    "typescript": "^2.7.1",
+    "webpack": "^3.10.0"
+  },
+  "dependencies": {
+    "p5": "^0.6.0"
+  }
+}
