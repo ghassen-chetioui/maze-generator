@@ -25,6 +25,22 @@ export default class Cell {
     leftNeighbour(left: Neighbour) {
         this.left = left;
     }
+
+    hasBeenVisited() {
+        return this.visited;
+    }
+
+    visit() {
+        this.visited = true;
+    }
+
+    unvisitedNeighbour() {
+        const unvisited = [this.top, this.right, this.bottom, this.left].filter(neighbour => (neighbour instanceof Cell && !neighbour.visited));
+        return unvisited.length > 0
+            ? unvisited[Math.floor(Math.random() * unvisited.length)]
+            : undefined;
+    }
+
 }
 
 export class Position {

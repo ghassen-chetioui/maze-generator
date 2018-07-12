@@ -1,12 +1,29 @@
 import Cell, { Position } from './Cell';
 export default class Grid {
 
-    private allCells: Cell[] = new Array();
+    private allCells: Array<Cell> = new Array();
     private currentCell: Cell;
     private constructor() { }
 
     cells() {
         return this.allCells;
+    }
+
+    visitNextCell() {
+        if (this.currentCell == null) {
+            this.currentCell = this.allCells[0];
+            this.currentCell.visit();
+        } else {
+            const cell = this.currentCell.unvisitedNeighbour();
+            
+            if (cell) {
+                console.log("unvisited cell found")
+                this.currentCell = cell;
+                this.currentCell.visit();
+            } else {
+                console.log("no unvisited cell found")
+            }
+        }
     }
 
     static build(size: number) {
@@ -29,7 +46,7 @@ export default class Grid {
                 }
             }
         }
-        grid.currentCell = cells[0][0];
+
         cells.forEach(row => grid.allCells = grid.allCells.concat(row));
         return grid;
     }
