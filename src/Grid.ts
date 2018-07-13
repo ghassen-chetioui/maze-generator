@@ -3,6 +3,7 @@ export default class Grid {
 
     private allCells: Array<Cell> = new Array();
     private currentCell: Cell;
+    private stack: Array<Cell> = new Array<Cell>();
     private constructor() { }
 
     cells() {
@@ -14,16 +15,22 @@ export default class Grid {
             this.currentCell = this.allCells[0];
             this.currentCell.visit();
         } else {
-            const cell = this.currentCell.unvisitedNeighbour();
-            
-            if (cell) {
-                console.log("unvisited cell found")
-                this.currentCell = cell;
+            const unvisitedNeighbour = this.currentCell.unvisitedNeighbour();
+            if (unvisitedNeighbour) {
+                this.currentCell.removeBoundary(unvisitedNeighbour);
+                unvisitedNeighbour.removeBoundary(this.currentCell);
+                this.stack.push(this.currentCell);
+                this.currentCell = unvisitedNeighbour;
                 this.currentCell.visit();
-            } else {
-                console.log("no unvisited cell found")
+            } else if (this.stack.length > 0) {
+                this.currentCell = this.stack.pop();
             }
         }
+    }
+
+    isCurrentCell(cell: Cell) {
+        return cell.position.x === this.currentCell.position.x
+            && cell.position.y === this.currentCell.position.y
     }
 
     static build(size: number) {

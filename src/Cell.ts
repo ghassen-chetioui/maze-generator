@@ -7,6 +7,7 @@ export default class Cell {
     private bottom: Neighbour;
     private left: Neighbour;
     private visited: boolean = false;
+    private boundaries = [true, true, true, true];
 
     constructor(readonly position: Position) { }
 
@@ -41,8 +42,38 @@ export default class Cell {
             : undefined;
     }
 
+    hasBoundary(boundary: Boundary) {
+        return this.boundaries[boundary]
+    }
+
+    removeBoundary(neighbour: Cell) {
+        const pos = this.computeNeighbourBoundary(neighbour);
+        this.boundaries[pos] = false;
+    }
+
+    private computeNeighbourBoundary(cell: Cell): Boundary {
+        const xDiff = cell.position.x - this.position.x;
+        if (xDiff === 1) {
+            return Boundary.RIGHT;
+        }
+        if (xDiff === -1) {
+            return Boundary.LEFT;
+        }
+        const yDiff = cell.position.y - this.position.y;
+        if (yDiff === -1) {
+            return Boundary.TOP;
+        }
+        if (yDiff === 1) {
+            return Boundary.BOTTOM;
+        }
+    }
+
 }
 
 export class Position {
     constructor(readonly x: number, readonly y: number) { }
+}
+
+export enum Boundary {
+    TOP = 0, RIGHT = 1, BOTTOM = 2, LEFT = 3
 }
