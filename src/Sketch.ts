@@ -7,13 +7,13 @@ const p5 = require("p5");
 
 const sketch: p5 = new p5(() => { });
 
-const sketchSize = 800;
+const sketchSize = 900;
 const cellSize = 20;
 const grid = Grid.build(Math.floor(sketchSize / cellSize));
 
 sketch.setup = () => {
   sketch.createCanvas(sketchSize, sketchSize);
-  sketch.frameRate(20)
+  sketch.frameRate(50)
 }
 
 sketch.draw = () => {

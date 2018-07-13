@@ -17,9 +17,9 @@ export default class Grid {
         } else {
             const unvisitedNeighbour = this.currentCell.unvisitedNeighbour();
             if (unvisitedNeighbour) {
+                this.stack.push(this.currentCell);
                 this.currentCell.removeBoundary(unvisitedNeighbour);
                 unvisitedNeighbour.removeBoundary(this.currentCell);
-                this.stack.push(this.currentCell);
                 this.currentCell = unvisitedNeighbour;
                 this.currentCell.visit();
             } else if (this.stack.length > 0) {
@@ -29,8 +29,7 @@ export default class Grid {
     }
 
     isCurrentCell(cell: Cell) {
-        return cell.position.x === this.currentCell.position.x
-            && cell.position.y === this.currentCell.position.y
+        return this.currentCell.position.eqauls(cell.position);
     }
 
     static build(size: number) {
