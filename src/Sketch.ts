@@ -2,13 +2,13 @@
 import 'p5';
 import Grid from './Grid';
 import Cell, { Boundary } from './Cell';
-import MazeResolver from './MazeResolver';
+import MazeResolver, { Resolution } from './MazeResolver';
 const p5 = require("p5");
 
 
 const sketch: p5 = new p5(() => { });
 
-const sketchSize = 200;
+const sketchSize = 900;
 const cellSize = 20;
 const grid = Grid.build(Math.floor(sketchSize / cellSize));
 const start = grid.cells()[0];
@@ -24,9 +24,10 @@ sketch.draw = () => {
   sketch.background(50);
   if (!grid.hasBeenGenerated()) {
     grid.visitNextCell();
-
-  } else {
+  } else if (resolver.resolutionStatus() === Resolution.IN_PROGRESS) {
+    // sketch.frameRate(1)
     resolver.nextResolutionStep()
+  } else {
     sketch.noLoop();
   }
   grid.cells().forEach(cell => drawCell(cell));
@@ -44,7 +45,7 @@ const drawCell = (cell: Cell) => {
   if (cell.hasBeenVisited()) {
     sketch.noStroke();
     if (grid.isCurrentCell(cell)) {
-      sketch.fill(50, 0, 255, 255);
+      sketch.fill(50, 0, 255, 100);
     }
     else {
       sketch.fill(255, 0, 255, 100);
@@ -52,5 +53,10 @@ const drawCell = (cell: Cell) => {
   } else {
     sketch.noFill();
   }
+
+  if (resolver.inCurrentPath(cell)) {
+    sketch.fill(0, 0, 255, 100)
+  }
+
   sketch.rect(x, y, cellSize, cellSize);
 }
