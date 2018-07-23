@@ -4,6 +4,7 @@ export default class Grid {
     private allCells: Array<Cell> = new Array();
     private currentCell: Cell;
     private stack: Array<Cell> = new Array<Cell>();
+    private generated: boolean = false;
     private constructor() { }
 
     cells() {
@@ -24,8 +25,14 @@ export default class Grid {
                 this.currentCell.visit();
             } else if (this.stack.length > 0) {
                 this.currentCell = this.stack.pop();
+            } else {
+                this.generated = true;
             }
         }
+    }
+
+    hasBeenGenerated() {
+        return this.generated;
     }
 
     isCurrentCell(cell: Cell) {

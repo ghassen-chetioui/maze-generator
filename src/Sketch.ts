@@ -2,14 +2,18 @@
 import 'p5';
 import Grid from './Grid';
 import Cell, { Boundary } from './Cell';
+import MazeResolver from './MazeResolver';
 const p5 = require("p5");
 
 
 const sketch: p5 = new p5(() => { });
 
-const sketchSize = 900;
+const sketchSize = 200;
 const cellSize = 20;
 const grid = Grid.build(Math.floor(sketchSize / cellSize));
+const start = grid.cells()[0];
+const target = grid.cells()[grid.cells().length - 1];
+const resolver = new MazeResolver(grid, start, target);
 
 sketch.setup = () => {
   sketch.createCanvas(sketchSize, sketchSize);
@@ -18,7 +22,13 @@ sketch.setup = () => {
 
 sketch.draw = () => {
   sketch.background(50);
-  grid.visitNextCell();
+  if (!grid.hasBeenGenerated()) {
+    grid.visitNextCell();
+
+  } else {
+    resolver.nextResolutionStep()
+    sketch.noLoop();
+  }
   grid.cells().forEach(cell => drawCell(cell));
 }
 

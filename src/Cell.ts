@@ -1,7 +1,6 @@
 type Neighbour = Cell | undefined;
 
 export default class Cell {
-
     private top: Neighbour;
     private right: Neighbour;
     private bottom: Neighbour;
@@ -40,6 +39,23 @@ export default class Cell {
         return unvisited.length > 0
             ? unvisited[Math.floor(Math.random() * unvisited.length)]
             : undefined;
+    }
+
+    accessibleNeighbours() {
+        const accessibleNeighbours = [];
+        if (!this.hasBoundary(Boundary.TOP)) {
+            accessibleNeighbours.push(this.top);
+        }
+        if (!this.hasBoundary(Boundary.RIGHT)) {
+            accessibleNeighbours.push(this.right);
+        }
+        if (!this.hasBoundary(Boundary.BOTTOM)) {
+            accessibleNeighbours.push(this.bottom);
+        }
+        if (!this.hasBoundary(Boundary.LEFT)) {
+            accessibleNeighbours.push(this.left);
+        }
+        return accessibleNeighbours;
     }
 
     hasBoundary(boundary: Boundary) {
