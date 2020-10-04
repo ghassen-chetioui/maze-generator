@@ -1,4 +1,4 @@
-import Maze from "./Grid";
+import Maze from "./Maze";
 import Cell from "./Cell";
 
 export default class MazeResolver {

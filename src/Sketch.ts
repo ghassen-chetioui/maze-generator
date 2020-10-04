@@ -1,6 +1,6 @@
 // Magic for p5 importing properly in TypeScript AND Webpack
 import 'p5';
-import Maze from './Grid';
+import Maze from './Maze';
 import Cell, { Boundary } from './Cell';
 import MazeResolver, { Resolution } from './MazeResolver';
 const p5 = require("p5");
@@ -11,12 +11,12 @@ const sketch: p5 = new p5(() => { });
 const sketchSize = 900;
 const cellSize = 20;
 
-const grid = Maze.build(Math.floor(sketchSize / cellSize));
+const maze = Maze.build(Math.floor(sketchSize / cellSize));
 
-const start = grid.cells[0];
-const target = grid.cells[grid.cells.length - 1];
+const start = maze.cells[0];
+const target = maze.cells[maze.cells.length - 1];
 
-const resolver = new MazeResolver(grid, start, target);
+const resolver = new MazeResolver(maze, start, target);
 
 sketch.setup = () => {
   sketch.createCanvas(sketchSize, sketchSize);
@@ -24,14 +24,14 @@ sketch.setup = () => {
 
 sketch.draw = () => {
   sketch.background(50);
-  if (!grid.hasBeenGenerated()) {
-    grid.visitNextCell();
+  if (!maze.hasBeenGenerated()) {
+    maze.visitNextCell();
   } else if (resolver.resolutionStatus() === Resolution.IN_PROGRESS) {
     resolver.nextResolutionStep()
   } else {
     sketch.noLoop();
   }
-  grid.cells.forEach(cell => drawCell(cell));
+  maze.cells.forEach(cell => drawCell(cell));
 }
 
 const drawCell = (cell: Cell) => {
@@ -45,7 +45,7 @@ const drawCell = (cell: Cell) => {
 
   if (cell.hasBeenVisited()) {
     sketch.noStroke();
-    if (grid.isCurrentCell(cell)) {
+    if (maze.isCurrentCell(cell)) {
       sketch.fill(50, 0, 255, 100);
     }
     else {
