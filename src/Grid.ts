@@ -1,19 +1,17 @@
 import Cell, { Position } from './Cell';
-export default class Grid {
 
-    private allCells: Array<Cell> = new Array();
+export default class Maze {
+
+
     private currentCell: Cell;
     private stack: Array<Cell> = new Array<Cell>();
     private generated: boolean = false;
-    private constructor() { }
 
-    cells() {
-        return this.allCells;
-    }
+    private constructor(readonly cells: Array<Cell>) { }
 
     visitNextCell() {
         if (this.currentCell == null) {
-            this.currentCell = this.allCells[0];
+            this.currentCell = this.cells[0];
             this.currentCell.visit();
         } else {
             const unvisitedNeighbour = this.currentCell.unvisitedNeighbour();
@@ -40,28 +38,28 @@ export default class Grid {
     }
 
     static build(size: number) {
-        let cells: Array<any> = [];
-        const grid = new Grid()
+        let rows: Array<any> = [];
         for (let i = 0; i < size; i++) {
-            cells[i] = [];
+            rows[i] = [];
             for (let j = 0; j < size; j++) {
                 const cell = new Cell(new Position(i, j));
-                cells[i][j] = cell;
+                rows[i][j] = cell;
                 if (i > 0) {
-                    const left = cells[i - 1][j];
+                    const left = rows[i - 1][j];
                     cell.leftNeighbour(left);
                     left.rightNeighbour(cell);
                 }
                 if (j > 0) {
-                    const top = cells[i][j - 1];
+                    const top = rows[i][j - 1];
                     cell.topNeighbour(top);
                     top.bottomNeighbour(cell);
                 }
             }
         }
 
-        cells.forEach(row => grid.allCells = grid.allCells.concat(row));
-        return grid;
+        const cells = rows.reduce((r1, r2) => r1.concat(r2), []);
+
+        return new Maze(cells);
     }
 
 }

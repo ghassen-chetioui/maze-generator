@@ -1,4 +1,4 @@
-import Grid from "./Grid";
+import Maze from "./Grid";
 import Cell from "./Cell";
 
 export default class MazeResolver {
@@ -9,7 +9,7 @@ export default class MazeResolver {
 
     private current: Evaluation;
 
-    constructor(readonly grid: Grid, private start: Cell, private target: Cell) {
+    constructor(readonly grid: Maze, private start: Cell, private target: Cell) {
         const e: Evaluation = { cell: start, fScore: this.heuristicCostEstimate(start, target), gScore: 0, previous: undefined }
         this.openSet.push(e)
     }

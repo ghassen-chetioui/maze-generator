@@ -1,6 +1,6 @@
 // Magic for p5 importing properly in TypeScript AND Webpack
 import 'p5';
-import Grid from './Grid';
+import Maze from './Grid';
 import Cell, { Boundary } from './Cell';
 import MazeResolver, { Resolution } from './MazeResolver';
 const p5 = require("p5");
@@ -10,14 +10,16 @@ const sketch: p5 = new p5(() => { });
 
 const sketchSize = 900;
 const cellSize = 20;
-const grid = Grid.build(Math.floor(sketchSize / cellSize));
-const start = grid.cells()[0];
-const target = grid.cells()[grid.cells().length - 1];
+
+const grid = Maze.build(Math.floor(sketchSize / cellSize));
+
+const start = grid.cells[0];
+const target = grid.cells[grid.cells.length - 1];
+
 const resolver = new MazeResolver(grid, start, target);
 
 sketch.setup = () => {
   sketch.createCanvas(sketchSize, sketchSize);
-  sketch.frameRate(50)
 }
 
 sketch.draw = () => {
@@ -25,12 +27,11 @@ sketch.draw = () => {
   if (!grid.hasBeenGenerated()) {
     grid.visitNextCell();
   } else if (resolver.resolutionStatus() === Resolution.IN_PROGRESS) {
-    // sketch.frameRate(1)
     resolver.nextResolutionStep()
   } else {
     sketch.noLoop();
   }
-  grid.cells().forEach(cell => drawCell(cell));
+  grid.cells.forEach(cell => drawCell(cell));
 }
 
 const drawCell = (cell: Cell) => {
