@@ -14,7 +14,7 @@
     "module": "esnext",
     "target": "es6"
   },
-  "exclude": [
-    "**/*.spec.ts"
+  "include": [
+    "src/**/*.ts"
   ]
 }
